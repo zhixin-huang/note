@@ -1,0 +1,4 @@
+# ConcurrentHashMap
+跟HashMap差不多。区别在于ConcurrentHashMap是线程安全的，通过CAS操作和synchronized关键字保证线程安全。  
+例如put操作，先判断锁对应的Hash桶是否为空，是空的则通过CAS操作放置元素，不是则通过synchronized锁住当前元素，后续put操作与HashMap类似。  
+ConcurrentHashMap扩容机制比较复杂，利用SIZECTL标记进行多线程扩容，put时会先判断当前table是否处于扩容状态，然后跟CPU核心数计算步长，得到该线程分配进行扩容的哈希桶，然后进行扩容，扩容完成后，会判断SIZECTL是否全部扩容完毕，扩容完成后再进行接下来的put操作，如果没有完成，put的for循环会再次进入扩容代码进行扩容。
